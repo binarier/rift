@@ -10,7 +10,6 @@
     "default_locale": "en",
     "background": {
         "scripts": [
-            "scripts/chromereload.js",
             "scripts/background.js"
         ]
     },
@@ -24,6 +23,7 @@
     },
     "options_page": "options.html",
     "permissions": [
+    	"proxy",
         "tabs",
         "http://*/*",
         "https://*/*"
