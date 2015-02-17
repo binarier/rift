@@ -13,10 +13,16 @@
 </head>
 <body class="popup">
 	<div class="container-fluid text-center">
-		<div class="btn-group" role="group">
-			<button id="btn-always" type="button" class="btn btn-default">always</button>
-			<button id="btn-required" type="button" class="btn btn-default">required</button>
-			<button id="btn-non" type="button" class="btn btn-default">none</button>
+		<div id="proxy-options" class="btn-group" data-toggle="buttons">
+			<label class="btn btn-default">
+				<input type="radio" name="options" value="always">always
+			</label>
+			<label class="btn btn-default">
+				<input type="radio" name="options" value="required">required
+			</label>
+			<label class="btn btn-default">
+				<input type="radio" name="options" value="none">none
+			</label>
 		</div>
 	</div>
 
