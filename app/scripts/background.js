@@ -1,29 +1,22 @@
 'use strict';
 
+var unreachables = {};
+
 chrome.runtime.onInstalled.addListener(function(details) {
 	console.log('previousVersion', details.previousVersion);
 });
 
-//chrome.browserAction.setBadgeText({
-//	text : '\'Allo'
-//});
-
-console.log('\'Allo \'Allo! Event Page for Browser Action');
-
-var config = {
-	mode : "pac_script",
-	pacScript : {
-		data : "function FindProxyForURL(url, host) {\n"
-				+ "  if (shExpMatch(host, '*.google.*'))\n"
-				+ "    return 'PROXY 211.149.217.191:13128';\n"
-				+ "  return 'DIRECT';\n"
-				+ "}"
+chrome.storage.sync.get("riftMode", function(items){
+	var riftMode = items['riftMode'];
+	console.log("riftMode:" + riftMode);
+	if (riftMode == null)
+	{
+		riftMode = 'none';
 	}
-};
-chrome.proxy.settings.set({
-	value : config,
-	scope : 'regular'
+	proxy.refreshChromeProxy(riftMode);
+	proxy.fetchList();
 });
+
 
 console.log("startup");
 $(document).ajaxSend(function(event, xhr, options){
@@ -33,11 +26,9 @@ $(document).ajaxSend(function(event, xhr, options){
 //$.getJSON("http://localhost:8080/token/refresh", function(result){
 //	console.log(result);
 //});
-console.log("add listener");
 chrome.webRequest.onErrorOccurred.addListener(function(details){
 	console.log(details.method + ":" + details.url);
+	var u = new URL(details.url);
+	unreachables[u.hostname] = true;
 }, {urls: ["<all_urls>"]});
 
-//chrome.extension.onRequest.addListener(function(request, sender, callback){
-//	console.log(request);
-//});
