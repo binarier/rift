@@ -40,6 +40,10 @@ $("#proxy-options input").change(function(){
 		scope : 'regular'
 	});
 	chrome.storage.sync.set({proxy:this.value});
+	
+	chrome.browserAction.setIcon({
+		path : 'images/' + this.value + "-32.png"
+	});
 });
 
 $(function(){
@@ -54,4 +58,6 @@ $(function(){
 		}
 		$("#proxy-options input[value='" + proxy + "']").parent().button('toggle');
 	});
+
+	chrome.extension.getBackgroundPage().console.log('foo');
 });

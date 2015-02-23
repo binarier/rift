@@ -4,9 +4,9 @@ chrome.runtime.onInstalled.addListener(function(details) {
 	console.log('previousVersion', details.previousVersion);
 });
 
-chrome.browserAction.setBadgeText({
-	text : '\'Allo'
-});
+//chrome.browserAction.setBadgeText({
+//	text : '\'Allo'
+//});
 
 console.log('\'Allo \'Allo! Event Page for Browser Action');
 
@@ -30,7 +30,14 @@ $(document).ajaxSend(function(event, xhr, options){
 	xhr.setRequestHeader("Authorization", "Basic " + btoa("clam:abc"));
 });
 
-$.getJSON("http://localhost:8080/token/refresh", function(result){
-	console.log(result);
-});
+//$.getJSON("http://localhost:8080/token/refresh", function(result){
+//	console.log(result);
+//});
+console.log("add listener");
+chrome.webRequest.onErrorOccurred.addListener(function(details){
+	console.log(details.method + ":" + details.url);
+}, {urls: ["<all_urls>"]});
 
+//chrome.extension.onRequest.addListener(function(request, sender, callback){
+//	console.log(request);
+//});
