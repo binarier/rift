@@ -13,22 +13,27 @@ chrome.storage.sync.get("riftMode", function(items){
 	{
 		riftMode = 'none';
 	}
-	proxy.refreshChromeProxy(riftMode);
-	proxy.fetchList();
 });
 
+//更新数据
+$.getJSON("http://localhost:8080/proxy/data", function(data){
+	proxy.serverData = data;
+	console.log(data.hostnames);
+	proxy.refreshChromeProxy('required');
+});
 
-console.log("startup");
+//认证
 $(document).ajaxSend(function(event, xhr, options){
 	xhr.setRequestHeader("Authorization", "Basic " + btoa("clam:abc"));
 });
 
-//$.getJSON("http://localhost:8080/token/refresh", function(result){
-//	console.log(result);
-//});
 chrome.webRequest.onErrorOccurred.addListener(function(details){
-	console.log(details.method + ":" + details.url);
+	console.log(details.error  + ":" + details.method + ":" + details.url);
 	var u = new URL(details.url);
-	unreachables[u.hostname] = true;
+	
+	if (!proxy.serverData.hostnames[u.hostname])
+	{
+		unreachables[u.hostname] = true;
+	}
 }, {urls: ["<all_urls>"]});
 
