@@ -13,7 +13,8 @@ proxy.serverData = {
 
 proxy.refreshChromeProxy = function(mode)
 {
-	this.mode = mode;
+	if (mode != null)
+		this.mode = mode;
 	
 	console.log("proxy set to " + this.mode);
 

@@ -13,14 +13,15 @@ chrome.storage.sync.get("riftMode", function(items){
 	{
 		riftMode = 'none';
 	}
+	proxy.mode = riftMode;
+	//更新数据
+	$.getJSON(RIFT_SERVER + "/proxy/data", function(data){
+		proxy.serverData = data;
+		console.log(data.hostnames);
+		proxy.refreshChromeProxy();
+	});
 });
 
-//更新数据
-$.getJSON("http://localhost:8080/proxy/data", function(data){
-	proxy.serverData = data;
-	console.log(data.hostnames);
-	proxy.refreshChromeProxy('required');
-});
 
 //认证
 $(document).ajaxSend(function(event, xhr, options){
@@ -33,7 +34,9 @@ chrome.webRequest.onErrorOccurred.addListener(function(details){
 	
 	if (!proxy.serverData.hostnames[u.hostname])
 	{
-		unreachables[u.hostname] = true;
+		if (unreachables[details.tabId] == undefined)
+			unreachables[details.tabId] = {};
+		unreachables[details.tabId][u.hostname] = true;
 	}
 }, {urls: ["<all_urls>"]});
 
